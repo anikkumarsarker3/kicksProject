@@ -1,19 +1,21 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router";
 import axios from "axios";
 import { Heart } from "lucide-react";
+import { AuthContext } from "../../contexts/AuthContext";
+import { toast } from "react-toastify";
 
 const sizes = [38, 39, 40, 41, 42, 43, 44, 45, 46, 47];
 const unavailableSizes = [];
 
 export default function ProductDetails() {
     const { productId } = useParams();
+    const { addToCart } = useContext(AuthContext);
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
     const [selectedSize, setSelectedSize] = useState(38);
     const [selectedColor, setSelectedColor] = useState("navy");
-    console.log("Product ID from URL:", productId);
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -50,10 +52,33 @@ export default function ProductDetails() {
     }
 
     const productImages = Array.isArray(product.images) ? product.images : [];
+
     const handleAddToCart = () => {
-        // এখানে আপনি প্রোডাক্টটি কার্টে যোগ করার লজিক লিখতে পারেন
-        alert(`Added ${product.title} (Size: ${selectedSize}, Color: ${selectedColor}) to cart!`);
-    }
+        addToCart({
+            cartKey: `${product.id}-${selectedSize}-${selectedColor}`,
+            id: product.id,
+            title: product.title,
+            slug: product.slug,
+            description: product.description,
+            category: product.category,
+            price: product.price,
+            images: productImages,
+            image: productImages[0] || "",
+            selectedSize,
+            selectedColor,
+            quantity: 1,
+        });
+        toast.success("Product added to cart!", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+        });
+    };
+
     return (
         <section className="w-full bg-[#d9d9d9] px-4 md:px-8 py-3 md:py-4">
             <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-[1.7fr_0.95fr] gap-3">
@@ -100,8 +125,8 @@ export default function ProductDetails() {
                                 type="button"
                                 onClick={() => setSelectedColor("navy")}
                                 className={`w-7 h-7 rounded-full border-2 ${selectedColor === "navy"
-                                    ? "border-[#1f2f47]"
-                                    : "border-transparent"
+                                        ? "border-[#1f2f47]"
+                                        : "border-transparent"
                                     } bg-[#2f3e55]`}
                                 aria-label="Navy"
                             />
@@ -109,8 +134,8 @@ export default function ProductDetails() {
                                 type="button"
                                 onClick={() => setSelectedColor("green")}
                                 className={`w-7 h-7 rounded-full border-2 ${selectedColor === "green"
-                                    ? "border-[#1f2f47]"
-                                    : "border-transparent"
+                                        ? "border-[#1f2f47]"
+                                        : "border-transparent"
                                     } bg-[#788a76]`}
                                 aria-label="Green"
                             />
@@ -140,10 +165,10 @@ export default function ProductDetails() {
                                         disabled={unavailable}
                                         onClick={() => setSelectedSize(size)}
                                         className={`h-8 rounded-md text-[11px] font-bold border transition ${unavailable
-                                            ? "bg-[#d0d0d0] text-[#8f8f8f] border-[#d0d0d0] cursor-not-allowed"
-                                            : selectedSize === size
-                                                ? "bg-[#1f1f1f] text-white border-[#1f1f1f]"
-                                                : "bg-[#efefef] text-[#2d2d2d] border-[#efefef]"
+                                                ? "bg-[#d0d0d0] text-[#8f8f8f] border-[#d0d0d0] cursor-not-allowed"
+                                                : selectedSize === size
+                                                    ? "bg-[#1f1f1f] text-white border-[#1f1f1f]"
+                                                    : "bg-[#efefef] text-[#2d2d2d] border-[#efefef]"
                                             }`}
                                     >
                                         {size}

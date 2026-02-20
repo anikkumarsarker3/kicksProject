@@ -6,28 +6,28 @@ const reviews = [
         id: 1,
         name: "Good Quality",
         text: "I highly recommend shopping from kicks",
-        avatar: "/src/assets/user1.jpg",
-        image: "/src/assets/review1.jpg",
+        avatar: "./src/assets/rP1.svg",
+        image: "./src/assets/review1.svg",
     },
     {
         id: 2,
         name: "Good Quality",
         text: "I highly recommend shopping from kicks",
-        avatar: "/src/assets/user2.jpg",
-        image: "/src/assets/review2.jpg",
+        avatar: "./src/assets/rP2.svg",
+        image: "./src/assets/review2.svg",
     },
     {
         id: 3,
         name: "Good Quality",
         text: "I highly recommend shopping from kicks",
-        avatar: "/src/assets/user3.jpg",
-        image: "/src/assets/review3.jpg",
+        avatar: "./src/assets/rP3.svg",
+        image: "./src/assets/review3.svg",
     },
 ];
 
 const ReviewsSection = () => {
     return (
-        <section className="w-full bg-[#f3f3f3] px-4 md:px-8 py-14">
+        <section className="w-full bg-[#d9d9d9] px-4 md:px-8 py-14">
             <div className="max-w-7xl mx-auto">
                 {/* Header */}
                 <div className="flex items-center justify-between mb-10">
@@ -53,7 +53,7 @@ const ReviewsSection = () => {
                                     <h3 className="font-semibold text-[#1f1f1f]">
                                         {review.name}
                                     </h3>
-                                    <p className="text-xs text-gray-500 mt-1 max-w-[200px]">
+                                    <p className="text-sm text-gray-500 mt-1 max-w-[200px]">
                                         {review.text}
                                     </p>
 

@@ -2,7 +2,7 @@ import React from "react";
 
 const HeroProduct = () => {
     return (
-        <section className="w-full bg-[#f3f3f3] px-4 md:px-8 pb-16 pt-10 md:pt-15">
+        <section className="w-full bg-[#d9d9d9] px-4 md:px-8 pb-16 pt-10 md:pt-15">
             <div className="max-w-7xl mx-auto relative rounded-3xl overflow-hidden">
                 {/* Background Image */}
                 <img

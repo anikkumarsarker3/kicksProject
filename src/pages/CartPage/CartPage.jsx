@@ -47,14 +47,14 @@ const CartPage = () => {
                 <div style="text-align:left">
                     <p style="margin:0;">Items: <strong>${totalItems}</strong></p>
                     <p style="margin:0;">Subtotal: <strong>$${subTotal.toFixed(
-                        2
-                    )}</strong></p>
+                2
+            )}</strong></p>
                     <p style="margin:0;">Delivery: <strong>$${DELIVERY_FEE.toFixed(
-                        2
-                    )}</strong></p>
+                2
+            )}</strong></p>
                     <p style="margin:8px 0 0 0;">Total Payable: <strong>$${total.toFixed(
-                        2
-                    )}</strong></p>
+                2
+            )}</strong></p>
                 </div>
             `,
             showCancelButton: true,
@@ -76,13 +76,13 @@ const CartPage = () => {
 
     return (
         <div>
-            <div className="min-h-screen bg-gray-100 p-4 md:p-10">
+            <div className="min-h-screen bg-[#d9d9d9] p-4 md:p-10">
                 <div className="max-w-6xl mx-auto">
                     <div className="mb-6">
                         <h1 className="text-2xl md:text-3xl font-semibold text-gray-800">
                             Saving to celebrate
                         </h1>
-                        <p className="text-sm text-gray-500 mt-1">
+                        <p className="text-md text-gray-500 mt-1">
                             Enjoy up to 60% off thousands of styles during the End of Year
                             sale - while supplies last. No code needed.
                         </p>
@@ -95,13 +95,13 @@ const CartPage = () => {
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                         <div className="lg:col-span-2 bg-white rounded-2xl shadow-sm p-6">
                             <h2 className="text-lg font-semibold text-gray-800">Your Bag</h2>
-                            <p className="text-sm text-gray-500 mb-6">
+                            <p className="text-md text-gray-500 mb-6">
                                 Items in your bag not reserved - check out now to make them
                                 yours.
                             </p>
 
                             {cartItems.length === 0 ? (
-                                <div className="text-sm text-gray-500 py-8">
+                                <div className="text-md text-gray-500 py-8">
                                     Your cart is empty.
                                 </div>
                             ) : (
@@ -188,7 +188,7 @@ const CartPage = () => {
                             )}
                         </div>
 
-                        <div className="bg-white rounded-2xl shadow-sm p-6 h-fit">
+                        <div className="bg-[#d9d9d9] rounded-2xl  p-6 h-fit">
                             <h2 className="text-lg font-semibold text-gray-800 mb-6">
                                 Order Summary
                             </h2>

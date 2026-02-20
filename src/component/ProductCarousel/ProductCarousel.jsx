@@ -7,6 +7,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { useNavigate } from "react-router";
+import axios from "axios";
 
 export default function ProductCarousel() {
     const [products, setProducts] = useState([]);
@@ -14,10 +15,9 @@ export default function ProductCarousel() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetch("https://api.escuelajs.co/api/v1/products")
-            .then((res) => res.json())
-            .then((data) => {
-                setProducts(data);
+        axios("https://api.escuelajs.co/api/v1/products")
+            .then((res) => {
+                setProducts(res.data);
                 setLoading(false);
             })
             .catch((error) => {

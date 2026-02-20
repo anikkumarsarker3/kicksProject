@@ -24,7 +24,7 @@ const Navbar = () => {
     );
 
     return (
-        <div className="w-full bg-[#f3f3f3] py-4 px-4 md:px-8 flex justify-center relative">
+        <div className="w-full bg-[#d9d9d9] py-4 px-4 md:px-8 flex justify-center relative">
             <div className="relative w-full max-w-7xl bg-[#FAFAFA] rounded-2xl shadow-sm px-4 md:px-8 py-3 flex items-center justify-between">
                 <div className="md:hidden flex items-center">
                     <button

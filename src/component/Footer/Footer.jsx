@@ -3,7 +3,7 @@ import { Facebook, Instagram, Twitter, Music2 } from "lucide-react";
 
 const Footer = () => {
     return (
-        <footer className="w-full bg-[#f3f3f3] px-4 md:px-8 pt-10 pb-6 flex justify-center">
+        <footer className="w-full bg-[#d9d9d9] px-4 md:px-8 pt-10 pb-6 flex justify-center">
             <div className="w-full max-w-7xl">
                 {/* Top Blue Section */}
                 <div className="bg-gradient-to-r from-[#5B6EE1] to-[#4E63D9] rounded-t-3xl p-6 pb-12 md:p-12 flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
@@ -90,7 +90,7 @@ const Footer = () => {
                 </div>
 
                 {/* Copyright */}
-                <div className="text-center text-md text-gray-500 mt-6">
+                <div className="text-center text-md text-gray-600 mt-6">
                     © All rights reserved
                 </div>
             </div>

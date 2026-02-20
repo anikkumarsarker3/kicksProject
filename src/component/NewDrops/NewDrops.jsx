@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 
@@ -9,9 +10,8 @@ const NewDrops = () => {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const res = await fetch("https://api.escuelajs.co/api/v1/products");
-                const data = await res.json();
-                setProducts(data.slice(0, 4));
+                const res = await axios("https://api.escuelajs.co/api/v1/products");
+                setProducts(res.data.slice(0, 4));
             } catch (error) {
                 console.error("Error fetching products:", error);
             } finally {

@@ -3,6 +3,7 @@ import { useParams } from "react-router";
 import axios from "axios";
 import { Heart } from "lucide-react";
 import { AuthContext } from "../../contexts/AuthContext";
+import Swal from "sweetalert2";
 import { toast } from "react-toastify";
 
 const sizes = [38, 39, 40, 41, 42, 43, 44, 45, 46, 47];
@@ -79,6 +80,23 @@ export default function ProductDetails() {
         });
     };
 
+    const handleBuyNow = () => {
+        Swal.fire({
+            icon: "success",
+            title: "Complete Your Purchase",
+            html: `
+                <div style="text-align:left">
+                    <p style="margin:0 0 6px 0;"><strong>${product.title}</strong></p>
+                    <p style="margin:0;">Size: ${selectedSize}</p>
+                    <p style="margin:0;">Color: ${selectedColor}</p>
+                    <p style="margin:8px 0 0 0;">Successfully Ordered</p>
+                </div>
+            `,
+            confirmButtonText: "Great",
+            confirmButtonColor: "#4f67dd",
+        });
+    };
+
     return (
         <section className="w-full bg-[#d9d9d9] px-4 md:px-8 py-3 md:py-4">
             <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-[1.7fr_0.95fr] gap-3">
@@ -125,8 +143,8 @@ export default function ProductDetails() {
                                 type="button"
                                 onClick={() => setSelectedColor("navy")}
                                 className={`w-7 h-7 rounded-full border-2 ${selectedColor === "navy"
-                                        ? "border-[#1f2f47]"
-                                        : "border-transparent"
+                                    ? "border-[#1f2f47]"
+                                    : "border-transparent"
                                     } bg-[#2f3e55]`}
                                 aria-label="Navy"
                             />
@@ -134,8 +152,8 @@ export default function ProductDetails() {
                                 type="button"
                                 onClick={() => setSelectedColor("green")}
                                 className={`w-7 h-7 rounded-full border-2 ${selectedColor === "green"
-                                        ? "border-[#1f2f47]"
-                                        : "border-transparent"
+                                    ? "border-[#1f2f47]"
+                                    : "border-transparent"
                                     } bg-[#788a76]`}
                                 aria-label="Green"
                             />
@@ -165,10 +183,10 @@ export default function ProductDetails() {
                                         disabled={unavailable}
                                         onClick={() => setSelectedSize(size)}
                                         className={`h-8 rounded-md text-[11px] font-bold border transition ${unavailable
-                                                ? "bg-[#d0d0d0] text-[#8f8f8f] border-[#d0d0d0] cursor-not-allowed"
-                                                : selectedSize === size
-                                                    ? "bg-[#1f1f1f] text-white border-[#1f1f1f]"
-                                                    : "bg-[#efefef] text-[#2d2d2d] border-[#efefef]"
+                                            ? "bg-[#d0d0d0] text-[#8f8f8f] border-[#d0d0d0] cursor-not-allowed"
+                                            : selectedSize === size
+                                                ? "bg-[#1f1f1f] text-white border-[#1f1f1f]"
+                                                : "bg-[#efefef] text-[#2d2d2d] border-[#efefef]"
                                             }`}
                                     >
                                         {size}
@@ -183,7 +201,7 @@ export default function ProductDetails() {
                             <button
                                 onClick={handleAddToCart}
                                 type="button"
-                                className="flex-1 h-10 bg-[#1f1f1f] text-white text-[11px] font-bold uppercase rounded-md"
+                                className="flex-1 h-10 cursor-pointer bg-[#1f1f1f] text-white text-[11px] font-bold uppercase rounded-md"
                             >
                                 Add To Cart
                             </button>
@@ -197,8 +215,9 @@ export default function ProductDetails() {
                         </div>
 
                         <button
+                            onClick={handleBuyNow}
                             type="button"
-                            className="w-full h-10 bg-[#4f67dd] text-white text-[11px] font-bold uppercase rounded-md"
+                            className="w-full cursor-pointer h-10 bg-[#4f67dd] text-white text-[11px] font-bold uppercase rounded-md"
                         >
                             Buy It Now
                         </button>

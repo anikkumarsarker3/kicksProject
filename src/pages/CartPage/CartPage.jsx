@@ -2,11 +2,13 @@ import { useContext, useMemo } from "react";
 import { Heart, Trash2 } from "lucide-react";
 import ProductCarousel from "../../component/ProductCarousel/ProductCarousel";
 import { AuthContext } from "../../contexts/AuthContext";
+import Swal from "sweetalert2";
 
 const DELIVERY_FEE = 6.99;
 
 const CartPage = () => {
-    const { cartItems, removeFromCart, updateCartQuantity } = useContext(AuthContext);
+    const { cartItems, removeFromCart, updateCartQuantity, clearCart } =
+        useContext(AuthContext);
 
     const { subTotal, totalItems, total } = useMemo(() => {
         const subTotalAmount = cartItems.reduce(
@@ -26,6 +28,51 @@ const CartPage = () => {
             total: grandTotal,
         };
     }, [cartItems]);
+
+    const handleCheckout = async () => {
+        if (cartItems.length === 0) {
+            Swal.fire({
+                icon: "warning",
+                title: "Cart is Empty",
+                text: "Add products before checkout.",
+                confirmButtonColor: "#4f67dd",
+            });
+            return;
+        }
+
+        const result = await Swal.fire({
+            icon: "question",
+            title: "Confirm Checkout",
+            html: `
+                <div style="text-align:left">
+                    <p style="margin:0;">Items: <strong>${totalItems}</strong></p>
+                    <p style="margin:0;">Subtotal: <strong>$${subTotal.toFixed(
+                        2
+                    )}</strong></p>
+                    <p style="margin:0;">Delivery: <strong>$${DELIVERY_FEE.toFixed(
+                        2
+                    )}</strong></p>
+                    <p style="margin:8px 0 0 0;">Total Payable: <strong>$${total.toFixed(
+                        2
+                    )}</strong></p>
+                </div>
+            `,
+            showCancelButton: true,
+            confirmButtonText: "Place Order",
+            cancelButtonText: "Cancel",
+            confirmButtonColor: "#4f67dd",
+        });
+
+        if (result.isConfirmed) {
+            clearCart();
+            Swal.fire({
+                icon: "success",
+                title: "Order Placed",
+                text: "Checkout complete. Your cart has been cleared.",
+                confirmButtonColor: "#4f67dd",
+            });
+        }
+    };
 
     return (
         <div>
@@ -169,7 +216,10 @@ const CartPage = () => {
                                 </div>
                             </div>
 
-                            <button className="w-full mt-6 bg-black text-white py-3 rounded-2xl text-sm font-medium hover:bg-gray-800 transition">
+                            <button
+                                onClick={handleCheckout}
+                                className="w-full mt-6 bg-black text-white py-3 rounded-2xl text-sm font-medium hover:bg-gray-800 transition"
+                            >
                                 CHECKOUT
                             </button>
 

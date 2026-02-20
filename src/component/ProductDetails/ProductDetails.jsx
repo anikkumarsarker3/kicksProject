@@ -1,163 +1,197 @@
-import { useState } from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Thumbs } from "swiper/modules";
-
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/thumbs";
-
-const images = [
-    "https://assets.adidas.com/images/w_600,f_auto,q_auto/sample1.jpg",
-    "https://assets.adidas.com/images/w_600,f_auto,q_auto/sample2.jpg",
-    "https://assets.adidas.com/images/w_600,f_auto,q_auto/sample3.jpg",
-    "https://assets.adidas.com/images/w_600,f_auto,q_auto/sample4.jpg",
-];
+import { useEffect, useState } from "react";
+import { useParams } from "react-router";
+import axios from "axios";
+import { Heart } from "lucide-react";
 
 const sizes = [38, 39, 40, 41, 42, 43, 44, 45, 46, 47];
+const unavailableSizes = [];
 
 export default function ProductDetails() {
-    const [thumbsSwiper, setThumbsSwiper] = useState(null);
+    const { productId } = useParams();
+    const [product, setProduct] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
     const [selectedSize, setSelectedSize] = useState(38);
-    const [selectedColor, setSelectedColor] = useState("dark");
+    const [selectedColor, setSelectedColor] = useState("navy");
+    console.log("Product ID from URL:", productId);
 
+    useEffect(() => {
+        const fetchProduct = async () => {
+            try {
+                setLoading(true);
+                setError("");
+                const res = await axios.get(
+                    `https://api.escuelajs.co/api/v1/products/${productId}`
+                );
+                setProduct(res.data);
+            } catch (err) {
+                console.error("Error fetching product:", err);
+                setError("Failed to load product details.");
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        if (productId) {
+            fetchProduct();
+        }
+    }, [productId]);
+
+    if (loading) {
+        return <div className="text-center py-12">Loading...</div>;
+    }
+
+    if (error) {
+        return <div className="text-center py-12 text-red-600">{error}</div>;
+    }
+
+    if (!product) {
+        return <div className="text-center py-12">Product not found.</div>;
+    }
+
+    const productImages = Array.isArray(product.images) ? product.images : [];
+    const handleAddToCart = () => {
+        // এখানে আপনি প্রোডাক্টটি কার্টে যোগ করার লজিক লিখতে পারেন
+        alert(`Added ${product.title} (Size: ${selectedSize}, Color: ${selectedColor}) to cart!`);
+    }
     return (
-        <div className="bg-gray-100 min-h-screen py-10 px-4 md:px-10">
-            <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10">
-
-                {/* LEFT: IMAGE SECTION */}
-                <div>
-                    <Swiper
-                        modules={[Navigation, Thumbs]}
-                        navigation
-                        thumbs={{ swiper: thumbsSwiper }}
-                        className="rounded-xl overflow-hidden bg-white"
-                    >
-                        {images.map((img, i) => (
-                            <SwiperSlide key={i}>
+        <section className="w-full bg-[#d9d9d9] px-4 md:px-8 py-3 md:py-4">
+            <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-[1.7fr_0.95fr] gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
+                    {productImages.length > 0 ? (
+                        productImages.map((img, index) => (
+                            <div
+                                key={`${img}-${index}`}
+                                className="bg-[#d4d5d8] h-[280px] md:h-[340px] overflow-hidden"
+                            >
                                 <img
                                     src={img}
-                                    alt="product"
-                                    className="w-full h-[400px] object-contain"
+                                    alt={`${product.title} ${index + 1}`}
+                                    className="w-full h-full object-cover"
                                 />
-                            </SwiperSlide>
-                        ))}
-                    </Swiper>
-
-                    {/* Thumbnails */}
-                    <Swiper
-                        onSwiper={setThumbsSwiper}
-                        slidesPerView={4}
-                        spaceBetween={10}
-                        className="mt-4"
-                    >
-                        {images.map((img, i) => (
-                            <SwiperSlide key={i}>
-                                <img
-                                    src={img}
-                                    alt="thumb"
-                                    className="cursor-pointer bg-white rounded-lg p-2 h-24 object-contain border"
-                                />
-                            </SwiperSlide>
-                        ))}
-                    </Swiper>
+                            </div>
+                        ))
+                    ) : (
+                        <div className="sm:col-span-2 bg-[#d4d5d8] h-[280px] md:h-[340px] flex items-center justify-center text-[#666] text-sm">
+                            No image available
+                        </div>
+                    )}
                 </div>
 
-                {/* RIGHT: PRODUCT INFO */}
-                <div>
-                    <span className="bg-blue-600 text-white text-xs px-3 py-1 rounded-full">
+                <aside className="bg-[#d9d9d9] py-1">
+                    <span className="inline-block bg-[#4f67dd] text-white text-[10px] px-3 py-1 rounded-full font-semibold">
                         New Release
                     </span>
 
-                    <h1 className="text-2xl md:text-3xl font-bold mt-4">
-                        ADIDAS 4DFWD X PARLEY RUNNING SHOES
+                    <h1 className="mt-2 text-[40px] md:text-[42px] leading-[0.95] font-extrabold uppercase text-[#242424]">
+                        {product.title}
                     </h1>
 
-                    <p className="text-blue-600 text-xl font-semibold mt-2">
-                        $125.00
+                    <p className="mt-2 text-[36px] md:text-[38px] font-bold text-[#3f5fdf]">
+                        ${Number(product.price).toFixed(2)}
                     </p>
 
-                    {/* Color */}
-                    <div className="mt-6">
-                        <h3 className="font-semibold text-sm mb-2">COLOR</h3>
-                        <div className="flex gap-3">
-                            <button
-                                onClick={() => setSelectedColor("dark")}
-                                className={`w-8 h-8 rounded-full border-2 ${selectedColor === "dark"
-                                    ? "border-black"
-                                    : "border-gray-300"
-                                    } bg-gray-800`}
-                            />
-                            <button
-                                onClick={() => setSelectedColor("green")}
-                                className={`w-8 h-8 rounded-full border-2 ${selectedColor === "green"
-                                    ? "border-black"
-                                    : "border-gray-300"
-                                    } bg-green-600`}
-                            />
-                        </div>
-                    </div>
-
-                    {/* Size */}
-                    <div className="mt-6">
-                        <div className="flex justify-between items-center">
-                            <h3 className="font-semibold text-sm">SIZE</h3>
-                            <span className="text-xs text-gray-500 cursor-pointer">
-                                SIZE CHART
-                            </span>
-                        </div>
-
-                        <div className="grid grid-cols-5 gap-2 mt-3">
-                            {sizes.map((size) => (
-                                <button
-                                    key={size}
-                                    onClick={() => setSelectedSize(size)}
-                                    className={`py-2 rounded-md border text-sm ${selectedSize === size
-                                        ? "bg-black text-white border-black"
-                                        : "bg-white border-gray-300"
-                                        }`}
-                                >
-                                    {size}
-                                </button>
-                            ))}
-                        </div>
-                    </div>
-
-                    {/* Buttons */}
-                    <div className="mt-8 space-y-3">
-                        <button className="w-full bg-black text-white py-3 rounded-lg font-medium">
-                            ADD TO CART
-                        </button>
-
-                        <button className="w-full bg-blue-600 text-white py-3 rounded-lg font-medium">
-                            BUY IT NOW
-                        </button>
-                    </div>
-
-                    {/* About */}
-                    <div className="mt-8">
-                        <h3 className="font-semibold text-sm mb-2">
-                            ABOUT THE PRODUCT
-                        </h3>
-                        <p className="text-sm text-gray-600">
-                            Shadow Navy / Army Green
+                    <div className="mt-4">
+                        <p className="text-[11px] font-bold uppercase text-[#262626] mb-2">
+                            COLOR
                         </p>
-
-                        <ul className="text-sm text-gray-600 mt-3 list-disc pl-5 space-y-2">
-                            <li>
-                                This product is excluded from all promotional discounts
-                                and offers.
-                            </li>
-                            <li>
-                                Pay over time in interest-free installments with Affirm.
-                            </li>
-                            <li>
-                                Join adiClub to get unlimited free standard shipping,
-                                returns, & exchanges.
-                            </li>
-                        </ul>
+                        <div className="flex items-center gap-2">
+                            <button
+                                type="button"
+                                onClick={() => setSelectedColor("navy")}
+                                className={`w-7 h-7 rounded-full border-2 ${selectedColor === "navy"
+                                    ? "border-[#1f2f47]"
+                                    : "border-transparent"
+                                    } bg-[#2f3e55]`}
+                                aria-label="Navy"
+                            />
+                            <button
+                                type="button"
+                                onClick={() => setSelectedColor("green")}
+                                className={`w-7 h-7 rounded-full border-2 ${selectedColor === "green"
+                                    ? "border-[#1f2f47]"
+                                    : "border-transparent"
+                                    } bg-[#788a76]`}
+                                aria-label="Green"
+                            />
+                        </div>
                     </div>
-                </div>
+
+                    <div className="mt-6">
+                        <div className="flex items-center justify-between">
+                            <p className="text-[11px] font-bold uppercase text-[#262626]">
+                                SIZE
+                            </p>
+                            <button
+                                type="button"
+                                className="text-[10px] font-bold uppercase text-[#444]"
+                            >
+                                SIZE CHART
+                            </button>
+                        </div>
+
+                        <div className="grid grid-cols-5 gap-1.5 mt-2">
+                            {sizes.map((size) => {
+                                const unavailable = unavailableSizes.includes(size);
+                                return (
+                                    <button
+                                        key={size}
+                                        type="button"
+                                        disabled={unavailable}
+                                        onClick={() => setSelectedSize(size)}
+                                        className={`h-8 rounded-md text-[11px] font-bold border transition ${unavailable
+                                            ? "bg-[#d0d0d0] text-[#8f8f8f] border-[#d0d0d0] cursor-not-allowed"
+                                            : selectedSize === size
+                                                ? "bg-[#1f1f1f] text-white border-[#1f1f1f]"
+                                                : "bg-[#efefef] text-[#2d2d2d] border-[#efefef]"
+                                            }`}
+                                    >
+                                        {size}
+                                    </button>
+                                );
+                            })}
+                        </div>
+                    </div>
+
+                    <div className="mt-4 space-y-2">
+                        <div className="flex items-center gap-2">
+                            <button
+                                onClick={handleAddToCart}
+                                type="button"
+                                className="flex-1 h-10 bg-[#1f1f1f] text-white text-[11px] font-bold uppercase rounded-md"
+                            >
+                                Add To Cart
+                            </button>
+                            <button
+                                type="button"
+                                className="w-10 h-10 rounded-md bg-[#1f1f1f] text-white flex items-center justify-center"
+                                aria-label="Add to wishlist"
+                            >
+                                <Heart size={16} />
+                            </button>
+                        </div>
+
+                        <button
+                            type="button"
+                            className="w-full h-10 bg-[#4f67dd] text-white text-[11px] font-bold uppercase rounded-md"
+                        >
+                            Buy It Now
+                        </button>
+                    </div>
+
+                    <div className="mt-5">
+                        <h3 className="text-[12px] font-extrabold uppercase text-[#252525]">
+                            About The Product
+                        </h3>
+                        <p className="mt-1 text-[12px] text-[#5a5a5a]">
+                            {product.category?.name || "General"} / {product.slug}
+                        </p>
+                        <p className="mt-2 text-[12px] text-[#5a5a5a] leading-snug">
+                            {product.description}
+                        </p>
+                    </div>
+                </aside>
             </div>
-        </div>
+        </section>
     );
 }

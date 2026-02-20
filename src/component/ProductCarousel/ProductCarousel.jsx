@@ -1,5 +1,6 @@
 // components/ProductCarousel.jsx
 
+import { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
 
@@ -7,66 +8,27 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 
-const products = [
-    {
-        id: 1,
-        name: "ADIDAS 4DFWD X PARLEY RUNNING SHOES",
-        price: 125,
-        image: "https://assets.adidas.com/images/w_600,f_auto,q_auto/sample1.jpg",
-        isNew: true,
-    },
-    {
-        id: 2,
-        name: "ADIDAS 4DFWD X PARLEY RUNNING SHOES",
-        price: 125,
-        image: "https://assets.adidas.com/images/w_600,f_auto,q_auto/sample2.jpg",
-        isNew: true,
-    },
-    {
-        id: 3,
-        name: "ADIDAS 4DFWD X PARLEY RUNNING SHOES",
-        price: 125,
-        image: "https://assets.adidas.com/images/w_600,f_auto,q_auto/sample3.jpg",
-        isNew: true,
-    },
-    {
-        id: 4,
-        name: "ADIDAS 4DFWD X PARLEY RUNNING SHOES",
-        price: 125,
-        image: "https://assets.adidas.com/images/w_600,f_auto,q_auto/sample4.jpg",
-        isNew: true,
-    },
-    {
-        id: 5,
-        name: "ADIDAS 4DFWD X PARLEY RUNNING SHOES",
-        price: 125,
-        image: "https://assets.adidas.com/images/w_600,f_auto,q_auto/sample5.jpg",
-        isNew: true,
-    },
-    {
-        id: 6,
-        name: "ADIDAS 4DFWD X PARLEY RUNNING SHOES",
-        price: 125,
-        image: "https://assets.adidas.com/images/w_600,f_auto,q_auto/sample6.jpg",
-        isNew: true,
-    },
-    {
-        id: 7,
-        name: "ADIDAS 4DFWD X PARLEY RUNNING SHOES",
-        price: 125,
-        image: "https://assets.adidas.com/images/w_600,f_auto,q_auto/sample7.jpg",
-        isNew: true,
-    },
-    {
-        id: 8,
-        name: "ADIDAS 4DFWD X PARLEY RUNNING SHOES",
-        price: 125,
-        image: "https://assets.adidas.com/images/w_600,f_auto,q_auto/sample8.jpg",
-        isNew: true,
-    },
-];
-
 export default function ProductCarousel() {
+    const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        fetch("https://api.escuelajs.co/api/v1/products")
+            .then((res) => res.json())
+            .then((data) => {
+                setProducts(data.slice(0, 8)); // শুধু ৮টা product দেখাবো
+                setLoading(false);
+            })
+            .catch((error) => {
+                console.error("Error fetching products:", error);
+                setLoading(false);
+            });
+    }, []);
+
+    if (loading) {
+        return <div className="text-center py-10">Loading...</div>;
+    }
+
     return (
         <div className="bg-gray-100 py-10 px-4 md:px-10">
             <div className="max-w-7xl mx-auto">
@@ -78,39 +40,26 @@ export default function ProductCarousel() {
                     </h2>
                 </div>
 
-                {/* Swiper */}
                 <Swiper
                     modules={[Navigation, Pagination]}
                     navigation
                     pagination={{ clickable: true }}
                     spaceBetween={20}
                     breakpoints={{
-                        0: {
-                            slidesPerView: 1,
-                        },
-                        640: {
-                            slidesPerView: 2,
-                        },
-                        1024: {
-                            slidesPerView: 4,
-                        },
+                        0: { slidesPerView: 1 },
+                        640: { slidesPerView: 2 },
+                        1024: { slidesPerView: 4 },
                     }}
                 >
                     {products.map((product) => (
                         <SwiperSlide key={product.id}>
                             <div className="bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition duration-300">
 
-                                {/* Image Box */}
+                                {/* Image */}
                                 <div className="relative bg-gray-50 rounded-xl p-4">
-                                    {product.isNew && (
-                                        <span className="absolute top-3 left-3 bg-blue-600 text-white text-xs px-3 py-1 rounded-full">
-                                            New
-                                        </span>
-                                    )}
-
                                     <img
-                                        src={product.image}
-                                        alt={product.name}
+                                        src={product.images?.[0]}
+                                        alt={product.title}
                                         className="w-full h-40 object-contain"
                                     />
                                 </div>
@@ -118,7 +67,7 @@ export default function ProductCarousel() {
                                 {/* Content */}
                                 <div className="mt-4">
                                     <h3 className="text-sm font-semibold leading-tight min-h-[48px]">
-                                        {product.name}
+                                        {product.title}
                                     </h3>
 
                                     <button className="mt-4 w-full bg-black text-white py-2 rounded-lg text-sm font-medium hover:bg-gray-800 transition">
@@ -129,7 +78,6 @@ export default function ProductCarousel() {
                         </SwiperSlide>
                     ))}
                 </Swiper>
-
             </div>
         </div>
     );

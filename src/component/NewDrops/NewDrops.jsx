@@ -1,37 +1,29 @@
-import React from "react";
-
-const products = [
-    {
-        id: 1,
-        badge: "New",
-        image: "/src/assets/shoe1.png",
-        title: "ADIDAS 4DFWD X PARLEY RUNNING SHOES",
-        price: "$125",
-    },
-    {
-        id: 2,
-        badge: "10% off",
-        image: "/src/assets/shoe2.png",
-        title: "ADIDAS 4DFWD X PARLEY RUNNING SHOES",
-        price: "$125",
-    },
-    {
-        id: 3,
-        badge: "New",
-        image: "/src/assets/shoe3.png",
-        title: "ADIDAS 4DFWD X PARLEY RUNNING SHOES",
-        price: "$125",
-    },
-    {
-        id: 4,
-        badge: "New",
-        image: "/src/assets/shoe4.png",
-        title: "ADIDAS 4DFWD X PARLEY RUNNING SHOES",
-        price: "$125",
-    },
-];
+import React, { useEffect, useState } from "react";
 
 const NewDrops = () => {
+    const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                const res = await fetch("https://api.escuelajs.co/api/v1/products");
+                const data = await res.json();
+                setProducts(data.slice(0, 4)); // আগের মতো ৪টা product
+            } catch (error) {
+                console.error("Error fetching products:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchProducts();
+    }, []);
+
+    if (loading) {
+        return <div className="text-center py-12">Loading...</div>;
+    }
+
     return (
         <section className="w-full bg-[#f3f3f3] px-4 md:px-8 py-12">
             <div className="max-w-7xl mx-auto">
@@ -53,17 +45,12 @@ const NewDrops = () => {
                             {/* Image Card */}
                             <div className="relative bg-white rounded-2xl p-4 md:p-6 shadow-sm">
                                 {/* Badge */}
-                                <span
-                                    className={`absolute top-4 left-4 text-xs font-semibold px-3 py-1 rounded-full ${product.badge === "10% off"
-                                            ? "bg-orange-400 text-black"
-                                            : "bg-[#4E63D9] text-white"
-                                        }`}
-                                >
-                                    {product.badge}
+                                <span className="absolute top-4 left-4 text-xs font-semibold px-3 py-1 rounded-full bg-[#4E63D9] text-white">
+                                    New
                                 </span>
 
                                 <img
-                                    src={product.image}
+                                    src={product.images?.[0]}
                                     alt={product.title}
                                     className="w-full h-28 md:h-40 object-contain"
                                 />
@@ -76,7 +63,10 @@ const NewDrops = () => {
 
                             {/* Button */}
                             <button className="mt-3 w-full bg-black text-white text-xs md:text-sm font-semibold py-3 rounded-lg hover:opacity-90 transition">
-                                VIEW PRODUCT - <span className="text-orange-400">{product.price}</span>
+                                VIEW PRODUCT -{" "}
+                                <span className="text-orange-400">
+                                    ${product.price}
+                                </span>
                             </button>
                         </div>
                     ))}

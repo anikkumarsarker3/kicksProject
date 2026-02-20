@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import { ChevronLeft, ChevronRight, ArrowUpRight } from "lucide-react";
@@ -6,30 +7,37 @@ import { ChevronLeft, ChevronRight, ArrowUpRight } from "lucide-react";
 import "swiper/css";
 import "swiper/css/navigation";
 
-const categories = [
-    {
-        id: 1,
-        title: "LIFESTYLE SHOES",
-        image: "/src/assets/cat1.png",
-    },
-    {
-        id: 2,
-        title: "BASKETBALL SHOES",
-        image: "/src/assets/cat2.png",
-    },
-    {
-        id: 3,
-        title: "RUNNING SHOES",
-        image: "/src/assets/cat3.png",
-    },
-    {
-        id: 4,
-        title: "TRAINING SHOES",
-        image: "/src/assets/cat4.png",
-    },
-];
-
 const CategoriesSection = () => {
+    const [categories, setCategories] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const res = await axios.get(
+                    "https://api.escuelajs.co/api/v1/categories"
+                );
+
+                // শুধু valid image আছে এমন 4টা category নেবো
+                const filtered = res.data
+                    .filter((cat) => cat.image && cat.image.startsWith("http"))
+                    .slice(0, 4);
+
+                setCategories(filtered);
+            } catch (error) {
+                console.error("Error fetching categories:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchCategories();
+    }, []);
+
+    if (loading) {
+        return <div className="text-center py-12 text-white">Loading...</div>;
+    }
+
     return (
         <section className="w-full bg-[#1f1f1f] px-4 md:px-8 py-12">
             <div className="max-w-7xl mx-auto">
@@ -39,7 +47,6 @@ const CategoriesSection = () => {
                         Categories
                     </h2>
 
-                    {/* Navigation Buttons */}
                     <div className="hidden md:flex items-center gap-3">
                         <button className="cat-prev w-9 h-9 flex items-center justify-center bg-white/10 text-white rounded-md">
                             <ChevronLeft size={18} />
@@ -67,15 +74,16 @@ const CategoriesSection = () => {
                     {categories.map((cat) => (
                         <SwiperSlide key={cat.id}>
                             <div className="bg-[#e9e9e9] rounded-3xl p-6 relative h-[320px] md:h-[380px] flex flex-col justify-between overflow-hidden">
+
                                 <img
                                     src={cat.image}
-                                    alt={cat.title}
+                                    alt={cat.name}
                                     className="absolute right-0 top-10 w-3/4 object-contain"
                                 />
 
                                 <div className="relative z-10">
                                     <h3 className="text-lg md:text-xl font-bold text-[#1f1f1f] uppercase leading-snug">
-                                        {cat.title}
+                                        {cat.name}
                                     </h3>
                                 </div>
 

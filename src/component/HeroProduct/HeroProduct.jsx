@@ -1,12 +1,15 @@
 import React from "react";
+import heroImage from "../../assets/hero.svg";
+import heroThumb1 from "../../assets/hero1.svg";
+import heroThumb2 from "../../assets/hero2.svg";
 
 const HeroProduct = () => {
     return (
-        <section className="w-full bg-[#f3f3f3] px-4 md:px-8 pb-16 pt-10 md:pt-15">
+        <section className="w-full bg-[#d9d9d9] px-4 md:px-8 pb-16 pt-10 md:pt-15">
             <div className="max-w-7xl mx-auto relative rounded-3xl overflow-hidden">
                 {/* Background Image */}
                 <img
-                    src="./src/assets/hero.svg"
+                    src={heroImage}
                     alt="Nike Air Max"
                     className="w-full h-[420px] md:h-[600px] object-cover"
                 />
@@ -37,12 +40,12 @@ const HeroProduct = () => {
                 {/* Thumbnails */}
                 <div className="absolute right-4 md:right-8 bottom-6 md:bottom-12 flex flex-col gap-4 z-10">
                     <img
-                        src="./src/assets/hero1.svg"
+                        src={heroThumb1}
                         alt="thumb1"
                         className="w-16 h-16 md:w-24 md:h-24 object-cover rounded-2xl border border-white"
                     />
                     <img
-                        src="./src/assets/hero2.svg"
+                        src={heroThumb2}
                         alt="thumb2"
                         className="w-16 h-16 md:w-24 md:h-24 object-cover rounded-2xl border border-white"
                     />

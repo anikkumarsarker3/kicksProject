@@ -1,9 +1,12 @@
 import React from "react";
 import { Facebook, Instagram, Twitter, Music2 } from "lucide-react";
+import footerTopLogo from "../../assets/FooterTopLogo.svg";
+import addCircle from "../../assets/Add_circle.svg";
+import logoFooter from "../../assets/LogoFooter.svg";
 
 const Footer = () => {
     return (
-        <footer className="w-full bg-[#f3f3f3] px-4 md:px-8 pt-10 pb-6 flex justify-center">
+        <footer className="w-full bg-[#d9d9d9] px-4 md:px-8 pt-10 pb-6 flex justify-center">
             <div className="w-full max-w-7xl">
                 {/* Top Blue Section */}
                 <div className="bg-gradient-to-r from-[#5B6EE1] to-[#4E63D9] rounded-t-3xl p-6 pb-12 md:p-12 flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
@@ -30,8 +33,8 @@ const Footer = () => {
 
                     {/* Right Logo */}
                     <div className="text-white flex relative text-5xl md:text-7xl font-extrabold tracking-tight">
-                        <img src="./src/assets/FooterTopLogo.svg" alt="" className="" />
-                        <img src="/src/assets/Add_circle.svg" alt="" className="absolute -right-5 -top-5" />
+                        <img src={footerTopLogo} alt="" className="" />
+                        <img src={addCircle} alt="" className="absolute -right-5 -top-5" />
                         {/* <span className="absolute -top-2 -right-5 bg-orange-400 rounded-full text-[#4E63D9]">+</span> */}
                     </div>
                 </div>
@@ -85,12 +88,12 @@ const Footer = () => {
 
                     {/* Big Background Text */}
                     <div className="absolute bottom-0 left-0 w-full text-[80px] md:text-[200px] font-extrabold text-white/5 leading-none select-none pointer-events-none">
-                        <img src="./src/assets/LogoFooter.svg" alt="" className="mx-auto" />
+                        <img src={logoFooter} alt="" className="mx-auto" />
                     </div>
                 </div>
 
                 {/* Copyright */}
-                <div className="text-center text-md text-gray-500 mt-6">
+                <div className="text-center text-md text-gray-600 mt-6">
                     © All rights reserved
                 </div>
             </div>

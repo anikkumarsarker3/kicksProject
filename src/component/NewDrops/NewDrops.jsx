@@ -1,82 +1,78 @@
-import React from "react";
-
-const products = [
-    {
-        id: 1,
-        badge: "New",
-        image: "/src/assets/shoe1.png",
-        title: "ADIDAS 4DFWD X PARLEY RUNNING SHOES",
-        price: "$125",
-    },
-    {
-        id: 2,
-        badge: "10% off",
-        image: "/src/assets/shoe2.png",
-        title: "ADIDAS 4DFWD X PARLEY RUNNING SHOES",
-        price: "$125",
-    },
-    {
-        id: 3,
-        badge: "New",
-        image: "/src/assets/shoe3.png",
-        title: "ADIDAS 4DFWD X PARLEY RUNNING SHOES",
-        price: "$125",
-    },
-    {
-        id: 4,
-        badge: "New",
-        image: "/src/assets/shoe4.png",
-        title: "ADIDAS 4DFWD X PARLEY RUNNING SHOES",
-        price: "$125",
-    },
-];
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 
 const NewDrops = () => {
+    const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                const res = await axios("https://api.escuelajs.co/api/v1/products");
+                setProducts(res.data.slice(0, 4));
+            } catch (error) {
+                console.error("Error fetching products:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchProducts();
+    }, []);
+
+    if (loading) {
+        return <div className="text-center py-12">Loading...</div>;
+    }
+    const handleProductDetails = (productId) => {
+        // এখানে আপনি product details page এ navigate করতে পারেন
+        // উদাহরণ: navigate(`/products/${product.id}`)
+        // alert("Go to product details page");
+        navigate(`/products/${productId}`);
+        console.log("Product Details for ID:", productId);
+    }
     return (
-        <section className="w-full bg-[#f3f3f3] px-4 md:px-8 py-12">
+        <section className="w-full bg-[#d9d9d9] px-4 md:px-8 lg:px-10 py-10 md:py-12">
             <div className="max-w-7xl mx-auto">
-                {/* Header */}
-                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-10">
-                    <h2 className="text-3xl md:text-5xl font-extrabold text-[#1f1f1f] leading-tight">
-                        DON’T MISS OUT <br className="hidden md:block" /> NEW DROPS
+                <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 md:gap-8 mb-7 md:mb-8">
+                    <h2 className="text-[42px] md:text-[56px] font-extrabold text-[#1f1f1f] leading-[0.95] tracking-tight uppercase">
+                        DON&apos;T MISS OUT
+                        <br />
+                        NEW DROPS
                     </h2>
 
-                    <button className="self-start md:self-auto px-6 py-3 bg-[#4E63D9] text-white text-sm font-semibold rounded-lg hover:opacity-90 transition">
+                    <button className="self-start md:self-auto px-7 py-3 bg-[#4f67dd] text-white text-xs md:text-sm font-bold rounded-md hover:opacity-90 transition whitespace-nowrap">
                         SHOP NEW DROPS
                     </button>
                 </div>
 
-                {/* Product Grid */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 md:gap-4">
                     {products.map((product) => (
                         <div key={product.id} className="group">
-                            {/* Image Card */}
-                            <div className="relative bg-white rounded-2xl p-4 md:p-6 shadow-sm">
-                                {/* Badge */}
-                                <span
-                                    className={`absolute top-4 left-4 text-xs font-semibold px-3 py-1 rounded-full ${product.badge === "10% off"
-                                            ? "bg-orange-400 text-black"
-                                            : "bg-[#4E63D9] text-white"
-                                        }`}
-                                >
-                                    {product.badge}
+                            <div className="relative bg-[#d9d9d9] rounded-3xl border-[5px] border-[#ededed] min-h-[175px] md:min-h-[185px] flex items-center justify-center overflow-hidden">
+                                <span className="absolute z-5 top-0 left-0 text-[10px] font-semibold px-3 py-1 rounded-br-xl bg-[#4f67dd] text-white">
+                                    New
                                 </span>
 
-                                <img
-                                    src={product.image}
-                                    alt={product.title}
-                                    className="w-full h-28 md:h-40 object-contain"
-                                />
+                                <div className="absolute w-full h-[160px] md:h-[175px] overflow-hidden rounded-xl">
+                                    <img
+                                        src={product.images?.[0] || ""}
+                                        alt={product.title}
+                                        className="w-full h-full object-cover object-center absolute"
+                                    />
+                                </div>
                             </div>
 
-                            {/* Title */}
-                            <h3 className="mt-4 text-sm md:text-base font-bold text-[#1f1f1f] leading-snug">
+                            <h3 className="mt-3 text-[22px] font-extrabold text-[#232323] leading-[1.02] uppercase min-h-[64px] max-h-[64px] overflow-hidden">
                                 {product.title}
                             </h3>
 
-                            {/* Button */}
-                            <button className="mt-3 w-full bg-black text-white text-xs md:text-sm font-semibold py-3 rounded-lg hover:opacity-90 transition">
-                                VIEW PRODUCT - <span className="text-orange-400">{product.price}</span>
+                            <button onClick={() => handleProductDetails(product.id)} className="mt-3 w-full bg-[#1f1f1f] text-white text-[11px] md:text-xs font-bold py-3 rounded-md hover:opacity-90 transition">
+                                VIEW PRODUCT -
+                                <span className="text-[#f5ac2f] ml-1">
+                                    ${product.price}
+                                </span>
                             </button>
                         </div>
                     ))}

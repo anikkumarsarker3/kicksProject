@@ -1,5 +1,5 @@
 import React from 'react';
-import DoItRight from '../../component/DoitRight/DoitRight';
+import DoItRight from '../../component/DoitRight/DoItRight';
 import HeroProduct from '../../component/HeroProduct/HeroProduct';
 import NewDrops from '../../component/NewDrops/NewDrops';
 import CategoriesSection from '../../component/CategoriesSection/CategoriesSection';

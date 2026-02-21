@@ -5,13 +5,14 @@ import ProductCarousel from "../component/ProductCarousel/ProductCarousel";
 import ProductPage from "../Pages/ProductPage/ProductPage";
 import CartPage from "../Pages/CartPage/CartPage";
 import Loader from "../component/Loading/Loader";
+import ErrorPage from "../component/ErrorPage/ErrorPage";
 
 export const router = createBrowserRouter([
     {
 
         path: "/",
         element: <MainLayout />,
-        errorElement: <div>Error loading page</div>,
+        errorElement: <ErrorPage />,
         children: [
             {
                 index: true,

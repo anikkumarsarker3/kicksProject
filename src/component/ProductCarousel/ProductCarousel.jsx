@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination } from "swiper/modules";
+import { Grid, Navigation, Pagination } from "swiper/modules";
 
 import "swiper/css";
+import "swiper/css/grid";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { useNavigate } from "react-router";
@@ -35,10 +36,10 @@ export default function ProductCarousel() {
     };
 
     return (
-        <section className="w-full bg-[#d9d9d9] px-4 md:px-8 py-9 md:py-10">
+        <section className="w-full bg-[#d9d9d9] px-3 md:px-8 py-7 md:py-10">
             <div className="max-w-7xl mx-auto">
                 <div className="flex items-center justify-between mb-5">
-                    <h2 className="text-[30px] md:text-[44px] leading-none font-extrabold text-[#252525]">
+                    <h2 className="text-[40px] md:text-[44px] leading-none font-extrabold text-[#252525]">
                         You may also like
                     </h2>
 
@@ -61,7 +62,7 @@ export default function ProductCarousel() {
                 </div>
 
                 <Swiper
-                    modules={[Navigation, Pagination]}
+                    modules={[Grid, Navigation, Pagination]}
                     navigation={{
                         prevEl: ".carousel-prev",
                         nextEl: ".carousel-next",
@@ -72,35 +73,42 @@ export default function ProductCarousel() {
                         bulletClass: "carousel-bullet",
                         bulletActiveClass: "carousel-bullet-active",
                     }}
-                    spaceBetween={10}
+                    spaceBetween={12}
                     breakpoints={{
-                        0: { slidesPerView: 1 },
-                        640: { slidesPerView: 2 },
-                        1024: { slidesPerView: 4 },
+                        0: {
+                            slidesPerView: 2,
+                            slidesPerGroup: 4,
+                            grid: { rows: 2, fill: "row" },
+                        },
+                        1024: {
+                            slidesPerView: 4,
+                            slidesPerGroup: 1,
+                            grid: { rows: 1, fill: "row" },
+                        },
                     }}
                 >
                     {products.map((product) => (
                         <SwiperSlide key={product.id}>
-                            <article className="pb-1">
-                                <div className="relative bg-[#d4d6da] rounded-3xl border-[5px] border-[#ececec] px-3 pt-8 pb-3 h-[180px] md:h-[200px] flex items-center justify-center overflow-hidden">
+                            <article className="pb-2 md:pb-1">
+                                <div className="relative bg-[#d4d6da] rounded-2xl md:rounded-3xl border-[5px] border-[#ececec] px-3 pt-6 md:pt-8 pb-2 h-[135px] md:h-[200px] flex items-center justify-center overflow-hidden">
                                     <span className="absolute z-1 top-0 left-0 text-[9px] font-semibold px-3 py-1 rounded-br-xl bg-[#4f67dd] text-white">
                                         New
                                     </span>
                                     <img
                                         src={product.images?.[0] || ""}
                                         alt={product.title}
-                                        className="absolute w-[100%] h-[500px] object-contain object-center"
+                                        className="absolute w-[100%] h-[300px] md:h-[500px] object-contain object-center"
                                     />
                                 </div>
 
-                                <h3 className="mt-2 text-[18px] md:text-[20px] font-extrabold uppercase leading-[1.02] text-[#242424] min-h-[58px] max-h-[58px] overflow-hidden">
+                                <h3 className="mt-2 text-[12px] md:text-[20px] font-extrabold uppercase leading-[1.02] text-[#242424] min-h-[44px] md:min-h-[58px] max-h-[44px] md:max-h-[58px] overflow-hidden">
                                     {product.title}
                                 </h3>
 
                                 <button
                                     onClick={() => handleProductDetails(product.id)}
                                     type="button"
-                                    className="mt-2 w-full bg-[#1f1f1f] text-white text-[10px] md:text-[11px] font-bold py-3 rounded-md"
+                                    className="mt-2 w-full bg-[#1f1f1f] text-white text-[10px] md:text-[11px] font-bold py-2.5 md:py-3 rounded-md"
                                 >
                                     VIEW PRODUCT -
                                     <span className="text-[#f5ac2f] ml-1">

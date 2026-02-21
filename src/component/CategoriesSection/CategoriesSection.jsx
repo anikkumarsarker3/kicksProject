@@ -31,34 +31,38 @@ const CategoriesSection = () => {
         fetchCategories();
     }, []);
 
+    const panelLabels = ["Lifestyle Shoes", "Basketball Shoes"];
+    const categoryPairs = [];
+    for (let i = 0; i < categories.length; i += 2) {
+        categoryPairs.push(categories.slice(i, i + 2));
+    }
+
     if (loading) {
         return <div className="text-center py-12 text-white">Loading...</div>;
     }
 
-    const panelLabels = ["LIFESTYLE SHOES", "BASKETBALL SHOES"];
-
     return (
-        <section className="w-full bg-[#1f1f1f] px-4 md:px-8 py-10 md:py-12">
-            <div className="max-w-7xl mx-auto bg-[#1f1f1f] p-3 md:p-4">
-                <div className="flex items-center justify-between mb-6 md:mb-8">
-                    <h2 className="text-white text-4xl md:text-5xl font-extrabold tracking-tight uppercase">
+        <section className="w-full bg-[#1f1f1f] px-2 md:px-8 py-4 md:py-8">
+            <div className="max-w-7xl mx-auto bg-[#1f1f1f] p-2 md:p-0">
+                <div className="flex items-center justify-between mb-3 md:mb-6">
+                    <h2 className="text-white text-[19px] md:text-[52px] font-extrabold leading-none md:uppercase tracking-tight">
                         Categories
                     </h2>
 
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2 md:gap-3">
                         <button
                             type="button"
-                            className="cat-prev w-8 h-8 rounded-md bg-[#a8a8a8] text-[#1f1f1f] flex items-center justify-center"
+                            className="cat-prev w-6 h-6 md:w-8 md:h-8 rounded-md bg-[#8f8f8f] text-[#1f1f1f] flex items-center justify-center"
                             aria-label="Previous categories"
                         >
-                            <ChevronLeft size={16} />
+                            <ChevronLeft size={14} />
                         </button>
                         <button
                             type="button"
-                            className="cat-next w-8 h-8 rounded-md bg-[#e7e7e7] text-[#1f1f1f] flex items-center justify-center"
+                            className="cat-next w-6 h-6 md:w-8 md:h-8 rounded-md bg-[#e7e7e7] text-[#1f1f1f] flex items-center justify-center"
                             aria-label="Next categories"
                         >
-                            <ChevronRight size={16} />
+                            <ChevronRight size={14} />
                         </button>
                     </div>
                 </div>
@@ -69,43 +73,48 @@ const CategoriesSection = () => {
                         prevEl: ".cat-prev",
                         nextEl: ".cat-next",
                     }}
-                    spaceBetween={0}
-                    breakpoints={{
-                        0: { slidesPerView: 1 },
-                        768: { slidesPerView: 2 },
-                    }}
-                    className="rounded-[30px] overflow-hidden"
+                    slidesPerView={1}
+                    autoHeight
+                    className="rounded-[14px] md:rounded-[34px] overflow-hidden"
                 >
-                    {categories.map((cat, index) => (
-                        <SwiperSlide key={cat.id}>
-                            <article
-                                className={`relative h-[340px] md:h-[420px] overflow-hidden ${index % 2 === 0
-                                    ? "bg-[#d6d7d9]"
-                                    : "bg-[#e3e3e5]"
-                                    }`}
-                            >
-                                <img
-                                    src={cat.image}
-                                    alt={cat.name}
-                                    className="absolute inset-0 w-full h-full object-cover object-center"
-                                />
+                    {categoryPairs.map((pair, pairIndex) => (
+                        <SwiperSlide key={`cat-pair-${pairIndex}`} className="!h-auto">
+                            <div className="grid grid-cols-1 md:grid-cols-2">
+                                {pair.map((cat, indexInPair) => {
+                                    const absoluteIndex = pairIndex * 2 + indexInPair;
+                                    return (
+                                        <article
+                                            key={cat.id}
+                                            className={`relative h-[300px] md:h-[420px] overflow-hidden ${absoluteIndex % 2 === 0
+                                                ? "bg-[#d6d7d9]"
+                                                : "bg-[#e3e3e5]"
+                                                }`}
+                                        >
+                                            <img
+                                                src={cat.image}
+                                                alt={cat.name}
+                                                className="absolute inset-0 w-full h-full object-contain object-center p-6 md:p-10"
+                                            />
 
-                                <div className="absolute inset-0 bg-gradient-to-t from-white/70 via-transparent to-transparent" />
+                                            <div className="absolute inset-0 bg-gradient-to-t from-white/50 via-transparent to-transparent" />
 
-                                <div className="absolute left-7 right-7 md:left-9 md:right-9 bottom-6 md:bottom-7 z-10 flex items-end justify-between gap-4">
-                                    <h3 className="text-[22px] md:text-[38px] leading-[0.95] font-extrabold uppercase text-[#242424]">
-                                        {panelLabels[index] || cat.name}
-                                    </h3>
+                                            <div className="absolute left-4 right-4 md:left-7 md:right-7 bottom-4 md:bottom-5 z-10 flex items-end justify-between gap-4">
+                                                <h3 className="text-[16px] md:text-[40px] leading-[1.05] md:leading-[0.95] font-extrabold text-[#242424] md:uppercase">
+                                                    {panelLabels[absoluteIndex] || cat.name}
+                                                </h3>
 
-                                    <button
-                                        type="button"
-                                        className="w-9 h-9 md:w-10 md:h-10 shrink-0 rounded-md bg-[#1f1f1f] text-white flex items-center justify-center"
-                                        aria-label={`Open ${cat.name}`}
-                                    >
-                                        <ArrowUpRight size={18} />
-                                    </button>
-                                </div>
-                            </article>
+                                                <button
+                                                    type="button"
+                                                    className="w-5 h-5 md:w-7 md:h-7 shrink-0 rounded-[4px] bg-[#1f1f1f] text-white flex items-center justify-center"
+                                                    aria-label={`Open ${cat.name}`}
+                                                >
+                                                    <ArrowUpRight size={12} />
+                                                </button>
+                                            </div>
+                                        </article>
+                                    );
+                                })}
+                            </div>
                         </SwiperSlide>
                     ))}
                 </Swiper>

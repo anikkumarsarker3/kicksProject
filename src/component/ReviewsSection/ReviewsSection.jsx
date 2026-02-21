@@ -1,27 +1,33 @@
 import React from "react";
 import { Star } from "lucide-react";
+import rp1 from "../../assets/rP1.svg";
+import rp2 from "../../assets/rP2.svg";
+import rp3 from "../../assets/rP3.svg";
+import review1 from "../../assets/review1.svg";
+import review2 from "../../assets/review2.svg";
+import review3 from "../../assets/review3.svg";
 
 const reviews = [
     {
         id: 1,
         name: "Good Quality",
         text: "I highly recommend shopping from kicks",
-        avatar: "./src/assets/rP1.svg",
-        image: "./src/assets/review1.svg",
+        avatar: rp1,
+        image: review1,
     },
     {
         id: 2,
         name: "Good Quality",
         text: "I highly recommend shopping from kicks",
-        avatar: "./src/assets/rP2.svg",
-        image: "./src/assets/review2.svg",
+        avatar: rp2,
+        image: review2,
     },
     {
         id: 3,
         name: "Good Quality",
         text: "I highly recommend shopping from kicks",
-        avatar: "./src/assets/rP3.svg",
-        image: "./src/assets/review3.svg",
+        avatar: rp3,
+        image: review3,
     },
 ];
 

@@ -6,10 +6,12 @@ import Footer from '../component/Footer/Footer';
 const MainLayout = () => {
     return (
         <div>
-            <div >
+            <div className="fixed top-0 left-0 w-full z-50">
                 <Navbar />
             </div>
-            <Outlet />
+            <div className="pt-[92px]">
+                <Outlet />
+            </div>
             <Footer />
         </div>
     );

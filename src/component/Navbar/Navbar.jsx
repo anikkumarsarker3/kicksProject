@@ -1,5 +1,5 @@
 import React, { useContext, useMemo, useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import {
     Menu,
     X,
@@ -9,9 +9,11 @@ import {
     ChevronRight,
 } from "lucide-react";
 import { AuthContext } from "../../contexts/AuthContext";
+import logo from "../../assets/Logo.svg";
 
 const Navbar = () => {
     const [mobileOpen, setMobileOpen] = useState(false);
+    const navigate = useNavigate();
     const { cartItems = [] } = useContext(AuthContext);
 
     const cartCount = useMemo(
@@ -52,9 +54,10 @@ const Navbar = () => {
                     </button>
                 </div>
 
-                <div className="absolute left-1/2 -translate-x-1/2">
-                    <img src="/src/assets/Logo.svg" alt="Logo" className="h-6 md:h-8" />
-                </div>
+                <button onClick={() => navigate('/')} className="absolute left-1/2 -translate-x-1/2 cursor-pointer">
+                    <img src={logo} alt="Logo" className="h-6 md:h-8" />
+                </button>
+
 
                 <div className="flex items-center gap-4 md:gap-6 ml-auto">
                     <button className="hidden md:flex p-2 rounded-xl hover:bg-gray-100 transition">

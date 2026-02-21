@@ -12,6 +12,9 @@ createRoot(document.getElementById('root')).render(
     <AuthProvider>
       <RouterProvider router={router} />
     </AuthProvider>
-    <ToastContainer />
+    <ToastContainer
+      position="top-right"
+      style={{ top: "80px" }}
+    />
   </StrictMode>,
 )

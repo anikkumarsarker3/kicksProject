@@ -16,8 +16,7 @@ This project is designed as a sneaker store experience with:
 
 ## Live URL
 
-- **Production:** `Add your deployed URL here`  
-  Example format: `https://your-project-name.vercel.app`
+- **Production:** `https://kicks-project-nine.vercel.app`
 
 ## Tech Stack
 

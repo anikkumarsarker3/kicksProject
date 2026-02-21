@@ -93,13 +93,13 @@ const CategoriesSection = () => {
                                             <img
                                                 src={cat.image}
                                                 alt={cat.name}
-                                                className="absolute inset-0 w-full h-full object-contain object-center p-6 md:p-10"
+                                                className="absolute inset-0 w-full h-full object-center object-cover"
                                             />
 
                                             <div className="absolute inset-0 bg-gradient-to-t from-white/50 via-transparent to-transparent" />
 
                                             <div className="absolute left-4 right-4 md:left-7 md:right-7 bottom-4 md:bottom-5 z-10 flex items-end justify-between gap-4">
-                                                <h3 className="text-[16px] md:text-[40px] leading-[1.05] md:leading-[0.95] font-extrabold text-[#242424] md:uppercase">
+                                                <h3 className="text-[24px] md:text-[40px] leading-[1.05] md:leading-[0.95] font-extrabold text-[#242424] md:uppercase">
                                                     {panelLabels[absoluteIndex] || cat.name}
                                                 </h3>
 

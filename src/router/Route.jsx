@@ -27,6 +27,10 @@ export const router = createBrowserRouter([
                 path: "/cart",
                 element: <CartPage />
             },
+            {
+                path: "*",
+                element: <ErrorPage />
+            },
         ]
     }
 ])
